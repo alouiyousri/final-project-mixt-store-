@@ -1,0 +1,42 @@
+.order-card {
+  background-color: #111; /* Dark black background */
+  color: #c0c0c0; /* Silver text */
+  border: 1px solid #444; /* Dark silver/gray border */
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 0 10px rgba(192, 192, 192, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.order-card h4 {
+  margin-top: 0;
+  color: #dcdcdc; /* Lighter silver for titles */
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+}
+
+.order-card p {
+  margin: 8px 0;
+}
+
+.order-card strong {
+  color: #ffffff; /* White for emphasis */
+}
+
+.order-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+.order-card li {
+  padding: 6px 0;
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+}
+
+.order-card li:last-child {
+  border-bottom: none;
+}

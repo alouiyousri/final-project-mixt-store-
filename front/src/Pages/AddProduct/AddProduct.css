@@ -1,0 +1,65 @@
+.add-product-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #111; /* dark background */
+  color: #c0c0c0; /* silver text */
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(192, 192, 192, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.add-product-title {
+  margin-bottom: 25px;
+  color: #dcdcdc;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.add-product-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-product-input,
+.add-product-textarea,
+.add-product-file {
+  background-color: #1a1a1a;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: #c0c0c0;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.add-product-input::placeholder,
+.add-product-textarea::placeholder {
+  color: #888;
+}
+
+.add-product-textarea {
+  min-height: 100px;
+}
+
+.add-product-button {
+  background-color: #c0c0c0;
+  color: #000;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.add-product-button:hover:not(:disabled) {
+  background-color: #a9a9a9;
+}
+
+.add-product-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

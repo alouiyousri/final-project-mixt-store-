@@ -1,0 +1,61 @@
+/* src/Pages/Login/login.css */
+
+.login-card {
+  background-color: #121212;
+  color: #c0c0c0;
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(192, 192, 192, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #ffffff;
+}
+
+.login-card label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #1f1f1f;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  transition: border 0.3s;
+}
+
+.login-card input:focus {
+  border-color: #c0c0c0;
+  outline: none;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(145deg, #444, #222);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-card button:hover {
+  background: linear-gradient(145deg, #555, #333);
+}
+
+.login-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

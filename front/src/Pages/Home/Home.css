@@ -1,0 +1,48 @@
+.home-wrapper {
+  background-color: #000;
+  color: #c0c0c0;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.home-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: silver;
+}
+
+.home-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #ccc;
+}
+
+.home-explore h3 {
+  font-size: 1.5rem;
+  color: #c0c0c0;
+}
+
+.home-explore ul {
+  list-style: none;
+  padding: 0;
+}
+
+.home-explore li {
+  margin: 10px 0;
+}
+
+.home-link {
+  text-decoration: none;
+  color: #c0c0c0;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.home-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}

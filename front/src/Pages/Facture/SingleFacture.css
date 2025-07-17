@@ -1,0 +1,68 @@
+.facture-wrapper {
+  background-color: #000;
+  color: #c0c0c0;
+  min-height: 100vh;
+  padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.facture-invoice {
+  background-color: #111;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #888;
+}
+
+.facture-invoice h2,
+.facture-invoice h3 {
+  color: silver;
+}
+
+.facture-invoice p {
+  margin: 4px 0;
+}
+
+.facture-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: #ddd;
+}
+
+.facture-table th,
+.facture-table td {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: center;
+}
+
+.facture-table th {
+  background-color: #222;
+  color: #c0c0c0;
+}
+
+.facture-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.facture-actions button {
+  background: #c0c0c0;
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.facture-actions button:hover {
+  background: #fff;
+}
+
+.facture-error,
+.facture-loading {
+  color: red;
+  padding: 20px;
+}

@@ -1,0 +1,45 @@
+/* NavBar.css */
+
+nav {
+  background-color: #000000; /* Black background */
+  padding: 15px 30px;
+  border-bottom: 3px solid #C0C0C0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  color: #C0C0C0; /* Silver links */
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+nav button {
+  background-color: transparent;
+  color: #C0C0C0;
+  border: 1px solid #C0C0C0;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+nav button:hover {
+  background-color: #C0C0C0;
+  color: #000000;
+  transform: scale(1.05);
+}

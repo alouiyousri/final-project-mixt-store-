@@ -1,0 +1,110 @@
+.confirmation-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #000; /* black background */
+  color: #c0c0c0; /* silver text */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(192, 192, 192, 0.1);
+}
+
+.confirmation-title {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  color: #dcdcdc;
+  text-align: center;
+}
+
+.customer-info p {
+  margin: 6px 0;
+  font-size: 16px;
+  color: #c0c0c0;
+}
+
+.items-title {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #dcdcdc;
+}
+
+.confirmation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 25px;
+}
+
+.confirmation-table th,
+.confirmation-table td {
+  border-bottom: 1px solid #444;
+  padding: 8px 10px;
+  text-align: left;
+  color: #c0c0c0;
+  font-size: 15px;
+}
+
+.confirmation-table th {
+  border-bottom: 2px solid #666;
+}
+
+.img-cell {
+  width: 70px;
+  text-align: center;
+}
+
+.item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #555;
+}
+
+.total-label {
+  text-align: right;
+  font-size: 17px;
+  padding-top: 12px;
+  color: #dcdcdc;
+}
+
+.total-value {
+  font-size: 17px;
+  padding-top: 12px;
+  color: #dcdcdc;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+button {
+  background-color: transparent;
+  border: 1px solid #c0c0c0;
+  color: #c0c0c0;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-width: 120px;
+}
+
+button:hover {
+  background-color: #c0c0c0;
+  color: #000;
+}
+
+.error-message {
+  color: #ff4d4d;
+  text-align: center;
+  font-weight: 600;
+}
+
+.loading-message {
+  color: #888;
+  text-align: center;
+  font-style: italic;
+}

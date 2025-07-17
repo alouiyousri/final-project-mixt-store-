@@ -1,0 +1,86 @@
+/* src/Pages/Admin/profile.css */
+
+.profile-container {
+  background-color: #121212;
+  color: #ccc;
+  padding: 40px;
+  max-width: 800px;
+  margin: auto;
+  border-radius: 12px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+h2, h3 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.admin-info {
+  margin-bottom: 30px;
+}
+
+.logout-btn {
+  background: #ff3c3c;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #e23030;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.order-actions {
+  margin-top: 10px;
+}
+
+.view-link {
+  color: #3ca0ff;
+  text-decoration: none;
+  margin-right: 12px;
+  font-weight: bold;
+}
+
+.view-link:hover {
+  text-decoration: underline;
+}
+
+.delete-btn {
+  background: #b00020;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #9e001b;
+}
+
+.error-msg {
+  color: #ff4d4d;
+  text-align: center;
+}
+
+.loading-msg,
+.empty-msg {
+  color: #999;
+  text-align: center;
+}

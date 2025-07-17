@@ -1,0 +1,27 @@
+/* Footer.css */
+
+footer {
+  background-color: #000000; /* Black background */
+  color: #C0C0C0; /* Silver text */
+  padding: 20px;
+  text-align: center;
+  border-top: 3px solid #C0C0C0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+footer p {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+}
+
+footer nav a {
+  color: #C0C0C0;
+  text-decoration: none;
+  margin: 0 8px;
+  transition: color 0.3s, transform 0.2s;
+}
+
+footer nav a:hover {
+  color: white;
+  transform: scale(1.1);
+}
