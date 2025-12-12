@@ -3,29 +3,79 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { clearBasket, removeFromBasket } from "../../JS/Action/basketAction";
+import { clearBasket, removeFromBasket, updateBasketQuantity } from "../../JS/Action/basketAction";
 import "./Basket.css";
-import * as tunisiaGovernorates from "react-bootstrap/ElementChildren"; // Import CSS
 
 const Basket = () => {
   const dispatch = useDispatch();
   const basket = useSelector((state) => state.basket.items);
 
-  const [form, setForm] = useState({ name: "", phone: "", location: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    governorate: "",
+    municipality: "",
+    address: "",
+    postalCode: ""
+  });
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+
+  // Tunisia Governorates and their Delegations
+  const tunisiaData = {
+    "Tunis": ["Tunis Médina", "Bab Bhar", "Bab Souika", "Omrane", "Omrane Supérieur", "Ettahrir", "Ezzouhour", "El Menzah", "Cité El Khadra", "Sidi Hassine", "Séjoumi", "El Ouardia", "El Kabaria", "Sidi El Béchir", "Djebel Jelloud", "La Marsa", "Le Bardo", "Le Kram", "La Goulette", "Carthage", "Sidi Bou Said"],
+    "Ariana": ["Ariana Ville", "Ettadhamen", "Mnihla", "Kalâat el-Andalous", "Raoued", "Sidi Thabet", "La Soukra"],
+    "Ben Arous": ["Ben Arous", "Mornag", "El Mourouj", "Hammam Lif", "Hammam Chott", "Bou Mhel el-Bassatine", "Ezzahra", "Radès", "Mégrine", "Mohamedia", "Fouchana", "Nouvelle Medina"],
+    "Manouba": ["Manouba", "Den Den", "Douar Hicher", "Oued Ellil", "Mornaguia", "Borj El Amri", "El Battan", "Tebourba"],
+    "Nabeul": ["Nabeul", "Dar Chaabane El Fehri", "Béni Khiar", "El Mida", "Hammam Ghezèze", "Grombalia", "Bou Argoub", "Hammamet", "Menzel Bouzelfa", "Korba", "El Haouaria", "Takelsa", "Soliman", "Menzel Temime", "Kelibia", "Béni Khalled"],
+    "Zaghouan": ["Zaghouan", "Zriba", "Bir Mcherga", "El Fahs", "Nadhour", "Saouaf"],
+    "Bizerte": ["Bizerte Nord", "Bizerte Sud", "Ras Jebel", "Menzel Bourguiba", "Tinja", "Ghar El Melh", "Mateur", "Ghezala", "Menzel Jemil", "Joumine", "Sejnane", "El Alia", "Utique", "Jarzouna"],
+    "Béja": ["Béja Nord", "Béja Sud", "Amdoun", "Nefza", "Teboursouk", "Tibar", "Testour", "Goubellat", "Medjez el-Bab"],
+    "Jendouba": ["Jendouba", "Jendouba Nord", "Bou Salem", "Tabarka", "Aïn Draham", "Fernana", "Balta-Bou Aouane", "Ghardimaou", "Oued Meliz"],
+    "Kef": ["Le Kef", "Le Kef Ouest", "Nebeur", "Sakiet Sidi Youssef", "Tajerouine", "Kalaat Senan", "Kalâat Khasba", "Jerissa", "El Ksour", "Dahmani", "Sers"],
+    "Siliana": ["Siliana Nord", "Siliana Sud", "Bou Arada", "Gaâfour", "El Aroussa", "El Krib", "Bargou", "Makthar", "Rouhia", "Kesra", "Sidi Bou Rouis"],
+    "Kairouan": ["Kairouan Nord", "Kairouan Sud", "Echbika", "Sbikha", "Oueslatia", "Haffouz", "El Alâa", "Hajeb El Ayoun", "Nasrallah", "Cherarda", "Bouhajla"],
+    "Kasserine": ["Kasserine Nord", "Kasserine Sud", "Ezzouhour", "Hassi El Frid", "Sbeitla", "Sbiba", "Djedeliane", "El Ayoun", "Thala", "Hidra", "Foussana", "Feriana", "Mejel Bel Abbès"],
+    "Sidi Bouzid": ["Sidi Bouzid Ouest", "Sidi Bouzid Est", "Jilma", "Cebalet Ouled Asker", "Bir El Hafey", "Sidi Ali Ben Aoun", "Menzel Bouzaiane", "Meknassy", "Souk Jedid", "Mezzouna", "Regueb", "Ouled Haffouz"],
+    "Sousse": ["Sousse Médina", "Sousse Riadh", "Sousse Jawhara", "Sousse Sidi Abdelhamid", "Hammam Sousse", "Akouda", "Kalâa Kebira", "Sidi Bou Ali", "Hergla", "Enfidha", "Bouficha", "Kondar", "Sidi El Hani", "M'saken", "Kalâa Seghira", "Messaadine"],
+    "Monastir": ["Monastir", "Ouerdanine", "Sahline", "Zéramdine", "Beni Hassen", "Jemmal", "Bembla", "Moknine", "Bekalta", "Téboulba", "Ksar Hellal", "Ksibet el-Médiouni", "Sayada-Lamta-Bou Hajar"],
+    "Mahdia": ["Mahdia", "Bou Merdes", "Ouled Chamekh", "Chorbane", "Hebira", "Essouassi", "El Jem", "Chebba", "Melloulèche", "Sidi Alouane", "Ksour Essef"],
+    "Sfax": ["Sfax Ville", "Sfax Ouest", "Sakiet Ezzit", "Sakiet Eddaïer", "Sfax Sud", "Thyna", "Agareb", "Jebiniana", "El Amra", "El Hencha", "Menzel Chaker", "Ghraïba", "Bir Ali Ben Khalifa", "Skhira", "Mahares", "Kerkennah"],
+    "Gafsa": ["Gafsa Nord", "Gafsa Sud", "Sidi Aïch", "El Ksar", "Oum El Araies", "Redeyef", "Métlaoui", "Mdhila", "El Guettar", "Belkhir", "Sned"],
+    "Tozeur": ["Tozeur", "Degache", "Tameghza", "Nefta", "Hazoua"],
+    "Kebili": ["Kébili Sud", "Kébili Nord", "Souk Lahad", "Douz Nord", "Douz Sud", "El Faouar"],
+    "Gabès": ["Gabès Médina", "Gabès Ouest", "Gabès Sud", "Ghannouch", "El Hamma", "Matmata", "Nouvelle Matmata", "Mareth", "Menzel El Habib", "Métouia"],
+    "Medenine": ["Médenine Nord", "Médenine Sud", "Beni Khedache", "Ben Gardane", "Zarzis", "Houmt Souk", "Midoun", "Ajim", "Sidi Makhlouf"],
+    "Tataouine": ["Tataouine Nord", "Tataouine Sud", "Bir Lahmar", "Ghomrassen", "Dhehiba", "Remada", "Smâr"]
+  };
+
+  const tunisiaGovernorates = Object.keys(tunisiaData);
+  const [availableDelegations, setAvailableDelegations] = useState([]);
 
   const calculatedTotal = basket.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+
+    // When governorate changes, update available delegations
+    if (name === "governorate") {
+      setAvailableDelegations(tunisiaData[value] || []);
+      setForm({ ...form, governorate: value, municipality: "" }); // Reset municipality
+    }
+  };
 
   const handleRemove = (productId) => {
     dispatch(removeFromBasket(productId));
     toast.info("Item removed from basket", { autoClose: 1500 });
+  };
+
+  const handleQuantityChange = (productId, newQuantity) => {
+    if (newQuantity < 1) return;
+    dispatch(updateBasketQuantity(productId, newQuantity));
   };
 
   const handleSubmit = async (e) => {
@@ -38,19 +88,31 @@ const Basket = () => {
       return;
     }
 
+    // Combine location fields
+    const fullLocation = `${form.address}, ${form.municipality}, ${form.governorate} ${form.postalCode}`.trim();
+
     try {
       await axios.post("/api/orders", {
-        customerInfo: form,
+        customerInfo: {
+          name: form.name,
+          phone: form.phone,
+          location: fullLocation,
+          governorate: form.governorate,
+          municipality: form.municipality,
+          address: form.address,
+          postalCode: form.postalCode
+        },
         items: basket,
         total: calculatedTotal,
       });
       dispatch(clearBasket());
       toast.success("Order placed successfully!", { autoClose: 2000 });
       setShowForm(false);
-      setForm({ name: "", phone: "", location: "" });
+      setForm({ name: "", phone: "", governorate: "", municipality: "", address: "", postalCode: "" });
+      setAvailableDelegations([]);
     } catch (err) {
       console.error(err);
-      toast.error("Order failed. Try again.");
+      toast.error(err.response?.data?.errors?.[0]?.msg || "Order failed. Try again.");
     } finally {
       setLoading(false);
     }
@@ -73,16 +135,36 @@ const Basket = () => {
                   className="basket-item-image"
                 />
               )}
-              <span className="basket-item-name">
-                <strong>{item.name}</strong> {item.size ? `(${item.size})` : ""}{" "}
-                × {item.quantity} — ${(item.price * item.quantity).toFixed(2)}
-              </span>
-              <button
-                onClick={() => handleRemove(item.productId)}
-                className="basket-remove-button"
-              >
-                Remove
-              </button>
+              <div className="basket-item-details">
+                <span className="basket-item-name">
+                  <strong>{item.name}</strong> {item.size ? `(${item.size})` : ""}
+                </span>
+                <span className="basket-item-price">${item.price.toFixed(2)}</span>
+              </div>
+              <div className="basket-item-controls">
+                <div className="quantity-selector">
+                  <button
+                    className="quantity-btn"
+                    onClick={() => handleQuantityChange(item.productId, item.quantity - 1)}
+                  >
+                    −
+                  </button>
+                  <span className="quantity-display">{item.quantity}</span>
+                  <button
+                    className="quantity-btn"
+                    onClick={() => handleQuantityChange(item.productId, item.quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                <span className="basket-item-total">${(item.price * item.quantity).toFixed(2)}</span>
+                <button
+                  onClick={() => handleRemove(item.productId)}
+                  className="basket-remove-button"
+                >
+                  ✕
+                </button>
+              </div>
             </li>
           ))}
         </ul>
@@ -142,14 +224,21 @@ const Basket = () => {
                 ))}
               </select>
 
-              <input
+              <select
                 name="municipality"
-                placeholder="Municipality / Delegation *"
                 value={form.municipality}
                 onChange={handleChange}
                 required
-                className="basket-input"
-              />
+                className="basket-select"
+                disabled={!form.governorate}
+              >
+                <option value="">
+                  {form.governorate ? "Select Delegation *" : "Select Governorate first"}
+                </option>
+                {availableDelegations.map((delegation) => (
+                  <option key={delegation} value={delegation}>{delegation}</option>
+                ))}
+              </select>
 
               <textarea
                 name="address"

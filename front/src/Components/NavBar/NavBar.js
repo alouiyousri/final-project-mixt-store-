@@ -60,7 +60,6 @@ const NavBar = () => {
           {adminInfo ? (
             <>
               <li><Link to="/admin/profile" onClick={() => setMobileMenuOpen(false)}>👤 Profile</Link></li>
-              <li><Link to="/admin/add-product" onClick={() => setMobileMenuOpen(false)}>➕ Add Product</Link></li>
               <li>
                 <button onClick={handleLogout} className="logout-btn">
                   🚪 Logout

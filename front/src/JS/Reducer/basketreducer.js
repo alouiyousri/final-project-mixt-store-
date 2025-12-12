@@ -3,6 +3,7 @@ import {
   ADD_TO_BASKET,
   REMOVE_FROM_BASKET,
   CLEAR_BASKET,
+  UPDATE_BASKET_QUANTITY,
 } from "../Action/basketAction";
 
 const initialState = {
@@ -36,6 +37,16 @@ const basketReducer = (state = initialState, action) => {
       return {
         ...state,
         items: state.items.filter((item) => item.productId !== action.payload),
+      };
+
+    case UPDATE_BASKET_QUANTITY:
+      return {
+        ...state,
+        items: state.items.map((item) =>
+          item.productId === action.payload.productId
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        ),
       };
 
     case CLEAR_BASKET:

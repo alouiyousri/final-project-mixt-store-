@@ -13,17 +13,17 @@ const Footer = () => {
           <h3 className="footer-heading">About MyBrand.DC</h3>
           <p className="footer-description">
             Your trusted destination for women's fashion in Tunisia.
-            Quality clothing, dresses, and accessories delivered to your door.
+            Quality clothing and dresses delivered to your door.
           </p>
           <div className="footer-social">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-              <i className="social-icon">📘</i>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="social-link facebook">
+              <span className="social-icon">f</span>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <i className="social-icon">📷</i>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="social-link instagram">
+              <span className="social-icon">📷</span>
             </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-              <i className="social-icon">🎵</i>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="social-link tiktok">
+              <span className="social-icon">♫</span>
             </a>
           </div>
         </div>

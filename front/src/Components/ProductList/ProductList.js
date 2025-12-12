@@ -56,8 +56,6 @@ const ProductList = () => {
     "DRESS",
     "TROUSERS",
     "GYM SUITS",
-    "SHOES",
-    "ACCESSORIES"
   ];
 
   // Handle category change

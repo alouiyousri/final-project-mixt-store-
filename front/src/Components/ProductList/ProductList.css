@@ -57,8 +57,8 @@
   padding: 16px 20px 16px 50px;
   border-radius: 30px;
   border: 2px solid #f8bbd0;
-  background-color: #ffffff;
-  color: #5a4a5f;
+  background-color: #ffffff !important;
+  color: #5a4a5f !important;
   font-size: 1.05rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(233, 30, 99, 0.08);
@@ -67,6 +67,7 @@
 .product-search:focus {
   outline: none;
   border-color: #e91e63;
+  background-color: #ffffff !important;
   box-shadow: 0 6px 20px rgba(233, 30, 99, 0.15);
 }
 

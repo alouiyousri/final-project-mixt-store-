@@ -26,7 +26,7 @@ const Home = () => {
   }, [products]);
 
   // Fixed categories that always show
-  const allCategories = ["T-SHIRT", "DRESS", "TROUSERS", "GYM SUITS", "SHOES", "ACCESSORIES"];
+  const allCategories = ["T-SHIRT", "DRESS", "TROUSERS", "GYM SUITS"];
 
   // Category data with icons and colors
   const categoryData = {
@@ -36,12 +36,8 @@ const Home = () => {
     "DRESS": { icon: "👗", color: "#E91E63", label: "Dresses" },
     "trousers": { icon: "👖", color: "#607D8B", label: "Trousers" },
     "TROUSERS": { icon: "👖", color: "#607D8B", label: "Trousers" },
-    "gym suits": { icon: "🏋️", color: "#FF5722", label: "Gym Suits" },
-    "GYM SUITS": { icon: "🏋️", color: "#FF5722", label: "Gym Suits" },
-    "shoes": { icon: "👟", color: "#FF9800", label: "Shoes" },
-    "SHOES": { icon: "👟", color: "#FF9800", label: "Shoes" },
-    "accessories": { icon: "⌚", color: "#9C27B0", label: "Accessories" },
-    "ACCESSORIES": { icon: "⌚", color: "#9C27B0", label: "Accessories" },
+    "gym suits": { icon: "🏋️‍♀️", color: "#FF5722", label: "Gym Suits" },
+    "GYM SUITS": { icon: "🏋️‍♀️", color: "#FF5722", label: "Gym Suits" },
   };
 
   // Default category styling for unknown categories

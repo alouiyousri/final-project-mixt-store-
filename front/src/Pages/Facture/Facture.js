@@ -1,11 +1,15 @@
 // pages/admin/Facture.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import "./SingleFacture.css";
 
 const Facture = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -18,7 +22,7 @@ const Facture = () => {
         };
 
         const { data } = await axios.get("/api/orders", config);
-        setOrders(data);
+        setOrders(data.orders || data);
       } catch (err) {
         setError("Failed to load invoices. Please try again.");
       } finally {
@@ -29,56 +33,135 @@ const Facture = () => {
     fetchOrders();
   }, []);
 
-  if (loading) return <p>Loading invoices...</p>;
-  if (error) return <p>{error}</p>;
+  const getFilteredOrders = () => {
+    let filtered = orders;
+
+    if (filterStatus !== "all") {
+      filtered = filtered.filter((order) => order.status === filterStatus);
+    }
+
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (order) =>
+          order.customerInfo?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order._id.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return filtered;
+  };
+
+  const filteredOrders = getFilteredOrders();
+
+  if (loading) {
+    return (
+      <div className="facture-wrapper">
+        <div className="facture-loading-container">
+          <div className="spinner"></div>
+          <p className="facture-loading">Loading invoices...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) return <div className="facture-wrapper"><p className="facture-error">{error}</p></div>;
 
   return (
-    <div>
-      <h2>All Orders / Invoices</h2>
-      {orders.length === 0 ? (
-        <p>No invoices found.</p>
-      ) : (
-        orders.map((order) => (
-          <div key={order._id}>
-            <h3>Invoice #{order._id}</h3>
-            <p>Date: {new Date(order.createdAt).toLocaleString()}</p>
-            <p>Status: {order.status}</p>
+    <div className="facture-wrapper">
+      <div className="facture-list-container">
+        <h2 className="facture-list-title">📄 All Invoices</h2>
 
-            <h4>Customer Information</h4>
-            <p>Name: {order.customerInfo.name}</p>
-            <p>Phone: {order.customerInfo.phone}</p>
-            <p>Address: {order.customerInfo.address}</p>
-
-            <h4>Items</h4>
-            <table>
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
-                  <th>Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {order.items.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.name}</td>
-                    <td>{item.quantity}</td>
-                    <td>${item.price.toFixed(2)}</td>
-                    <td>${(item.price * item.quantity).toFixed(2)}</td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan="3">Total:</td>
-                  <td>${order.total.toFixed(2)}</td>
-                </tr>
-              </tfoot>
-            </table>
+        {/* Filters */}
+        <div className="facture-filters">
+          <div className="facture-search-box">
+            <span className="search-icon">🔍</span>
+            <input
+              type="text"
+              placeholder="Search by customer name or order ID..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="facture-search-input"
+            />
+            {searchTerm && (
+              <button className="clear-search" onClick={() => setSearchTerm("")}>
+                ✕
+              </button>
+            )}
           </div>
-        ))
-      )}
+
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="facture-filter-select"
+          >
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        {/* Orders Count */}
+        <p className="facture-count">📊 Showing {filteredOrders.length} invoice(s)</p>
+
+        {filteredOrders.length === 0 ? (
+          <div className="facture-empty">
+            <p className="empty-icon">📭</p>
+            <p className="empty-msg">No invoices found</p>
+          </div>
+        ) : (
+          <div className="facture-grid">
+            {filteredOrders.map((order) => (
+              <div key={order._id} className="facture-card">
+                <div className="facture-card-header">
+                  <h3>Invoice #{order._id.slice(-8)}</h3>
+                  <span className={`facture-status status-${order.status || "pending"}`}>
+                    {order.status || "pending"}
+                  </span>
+                </div>
+
+                <div className="facture-card-body">
+                  <p className="facture-info">
+                    <span className="info-icon">📅</span>
+                    <strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}
+                  </p>
+                  <p className="facture-info">
+                    <span className="info-icon">👤</span>
+                    <strong>Customer:</strong> {order.customerInfo?.name || "N/A"}
+                  </p>
+                  <p className="facture-info">
+                    <span className="info-icon">📱</span>
+                    <strong>Phone:</strong> {order.customerInfo?.phone || "N/A"}
+                  </p>
+                  <p className="facture-info">
+                    <span className="info-icon">📍</span>
+                    <strong>Location:</strong> {order.customerInfo?.governorate || "N/A"}
+                  </p>
+                  <p className="facture-info">
+                    <span className="info-icon">📦</span>
+                    <strong>Items:</strong> {order.items?.length || 0}
+                  </p>
+                  <p className="facture-info total">
+                    <span className="info-icon">💰</span>
+                    <strong>Total:</strong> {order.total?.toFixed(2)} TND
+                  </p>
+                </div>
+
+                <div className="facture-card-footer">
+                  <Link
+                    to={`/admin/confirmation/${order._id}`}
+                    className="facture-view-btn"
+                  >
+                    👁️ View Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

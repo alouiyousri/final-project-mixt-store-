@@ -9,8 +9,6 @@ const CATEGORIES = [
   "dress",
   "trousers",
   "gym suits",
-  "shoes",
-  "accessories",
 ];
 
 const AddProduct = () => {
@@ -71,92 +69,111 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="add-product-container">
-      <h2 className="add-product-title">Add New Product</h2>
+    <div className="add-product-wrapper">
+      <div className="add-product-container">
+        <h2 className="add-product-title">✨ Add New Product</h2>
 
-      <form
-        onSubmit={handleSubmit}
-        encType="multipart/form-data"
-        className="add-product-form"
-      >
-        <input
-          name="name"
-          placeholder="Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-          className="add-product-input"
-        />
-
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-          required
-          className="add-product-textarea"
-        />
-
-        <input
-          type="number"
-          name="price"
-          step="0.01"
-          placeholder="Price"
-          value={form.price}
-          onChange={handleChange}
-          required
-          className="add-product-input"
-        />
-
-        <input
-          type="text"
-          placeholder="Size (S, M, L or 42, 43...)"
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
-          className="add-product-input"
-        />
-
-        <label className="add-product-label">Category</label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-          className="add-product-select"
+        <form
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+          className="add-product-form"
         >
-          <option value="">-- Select Category --</option>
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat.toUpperCase()}
-            </option>
-          ))}
-        </select>
+          <div>
+            <label className="add-product-label">🏷️ Product Name</label>
+            <input
+              name="name"
+              placeholder="Enter product name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="add-product-input"
+            />
+          </div>
 
-        <label className="add-product-label">
-          <strong>Quantity (Stock)</strong>
-        </label>
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={quantity}
-          min="1"
-          onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
-          className="add-product-input"
-          required
-        />
+          <div>
+            <label className="add-product-label">📝 Description</label>
+            <textarea
+              name="description"
+              placeholder="Describe your product..."
+              value={form.description}
+              onChange={handleChange}
+              required
+              className="add-product-textarea"
+            />
+          </div>
 
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleFileChange}
-          className="add-product-file"
-          required
-        />
+          <div>
+            <label className="add-product-label">💰 Price (TND)</label>
+            <input
+              type="number"
+              name="price"
+              step="0.01"
+              placeholder="0.00"
+              value={form.price}
+              onChange={handleChange}
+              required
+              className="add-product-input"
+            />
+          </div>
 
-        <button type="submit" disabled={loading} className="add-product-button">
-          {loading ? "Uploading..." : "Add Product"}
-        </button>
-      </form>
+          <div>
+            <label className="add-product-label">📏 Size</label>
+            <input
+              type="text"
+              placeholder="S, M, L or 42, 43..."
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              className="add-product-input"
+            />
+          </div>
+
+          <div>
+            <label className="add-product-label">🗂️ Category</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+              className="add-product-select"
+            >
+              <option value="">-- Select Category --</option>
+              {CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="add-product-label">📦 Quantity (Stock)</label>
+            <input
+              type="number"
+              placeholder="Available quantity"
+              value={quantity}
+              min="1"
+              onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
+              className="add-product-input"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="add-product-label">📸 Product Images</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFileChange}
+              className="add-product-file"
+              required
+            />
+          </div>
+
+          <button type="submit" disabled={loading} className="add-product-button">
+            {loading ? "⏳ Uploading..." : "✨ Add Product"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -2,43 +2,43 @@
 body, html {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #000; /* Black background */
-  color: silver; /* Silver text */
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+  background: linear-gradient(180deg, #fff9fc 0%, #fef5f8 100%);
+  color: #5a4a5f;
 }
 
 a {
   text-decoration: none;
-  color: silver;
+  color: #8e6b93;
 }
 
 a:hover {
-  color: #ccc;
+  color: #e91e63;
 }
 
 /* NavBar */
 .navbar {
-  background-color: #111;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid silver;
+  border-bottom: 3px solid #f8bbd0;
 }
 
 .navbar a {
   margin: 0 1rem;
-  color: silver;
+  color: #8e6b93;
   font-weight: bold;
 }
 
 /* Footer */
 .footer {
-  background-color: #111;
-  color: silver;
+  background: linear-gradient(135deg, #fef5f8 0%, #fff9fc 100%);
+  color: #5a4a5f;
   text-align: center;
   padding: 1rem;
-  border-top: 1px solid silver;
+  border-top: 3px solid #f8bbd0;
   position: relative;
   bottom: 0;
   width: 100%;
