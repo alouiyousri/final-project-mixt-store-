@@ -73,8 +73,15 @@ const Basket = () => {
     toast.info("Item removed from basket", { autoClose: 1500 });
   };
 
-  const handleQuantityChange = (productId, newQuantity) => {
+  const handleQuantityChange = (productId, newQuantity, maxStock) => {
     if (newQuantity < 1) return;
+
+    // Check if new quantity exceeds stock
+    if (newQuantity > maxStock) {
+      toast.warning(`Only ${maxStock} items available in stock`);
+      return;
+    }
+
     dispatch(updateBasketQuantity(productId, newQuantity));
   };
 
@@ -140,19 +147,27 @@ const Basket = () => {
                   <strong>{item.name}</strong> {item.size ? `(${item.size})` : ""}
                 </span>
                 <span className="basket-item-price">${item.price.toFixed(2)}</span>
+                {item.stock && item.stock <= 5 && (
+                  <span className="stock-warning">⚠️ Only {item.stock} left</span>
+                )}
               </div>
               <div className="basket-item-controls">
                 <div className="quantity-selector">
                   <button
                     className="quantity-btn"
-                    onClick={() => handleQuantityChange(item.productId, item.quantity - 1)}
+                    onClick={() => handleQuantityChange(item.productId, item.quantity - 1, item.stock || 0)}
                   >
                     −
                   </button>
                   <span className="quantity-display">{item.quantity}</span>
                   <button
                     className="quantity-btn"
-                    onClick={() => handleQuantityChange(item.productId, item.quantity + 1)}
+                    onClick={() => handleQuantityChange(item.productId, item.quantity + 1, item.stock || 0)}
+                    disabled={item.quantity >= (item.stock || 0)}
+                    style={{
+                      opacity: item.quantity >= (item.stock || 0) ? 0.5 : 1,
+                      cursor: item.quantity >= (item.stock || 0) ? 'not-allowed' : 'pointer'
+                    }}
                   >
                     +
                   </button>

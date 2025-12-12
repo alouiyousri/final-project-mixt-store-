@@ -31,6 +31,7 @@ const ProductCard = ({ product }) => {
         quantity: 1,
         image: imageUrl,
         size: product.size || null,
+        stock: product.stock || 0, // Pass stock information
       })
     );
 

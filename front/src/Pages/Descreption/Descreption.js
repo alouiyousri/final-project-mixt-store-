@@ -37,6 +37,12 @@ const Description = () => {
       return;
     }
 
+    // Check if requested quantity exceeds stock
+    if (quantity > (product.stock ?? 0)) {
+      setMessage(`❌ Only ${product.stock} items available`);
+      return;
+    }
+
     dispatch(
       addToBasket({
         productId: product._id,
@@ -45,6 +51,7 @@ const Description = () => {
         image: product.images?.[0]?.url || "",
         quantity,
         size: product.size,
+        stock: product.stock || 0, // Pass stock information
       })
     );
     setMessage("✅ Added to basket!");

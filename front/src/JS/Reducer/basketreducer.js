@@ -20,17 +20,31 @@ const basketReducer = (state = initialState, action) => {
       if (exists) {
         return {
           ...state,
-          items: state.items.map((item) =>
-            item.productId === action.payload.productId
-              ? { ...item, quantity: item.quantity + action.payload.quantity }
-              : item
-          ),
+          items: state.items.map((item) => {
+            if (item.productId === action.payload.productId) {
+              const newQuantity = item.quantity + action.payload.quantity;
+              const maxStock = item.stock || action.payload.stock || 0;
+
+              // Don't exceed stock
+              if (newQuantity > maxStock) {
+                return item; // Keep current quantity if it would exceed stock
+              }
+
+              return { ...item, quantity: newQuantity };
+            }
+            return item;
+          }),
         };
       }
 
+      // For new items, ensure quantity doesn't exceed stock
+      const requestedQuantity = action.payload.quantity;
+      const availableStock = action.payload.stock || 0;
+      const finalQuantity = Math.min(requestedQuantity, availableStock);
+
       return {
         ...state,
-        items: [...state.items, action.payload], // already has quantity, image, etc.
+        items: [...state.items, { ...action.payload, quantity: finalQuantity }],
       };
 
     case REMOVE_FROM_BASKET:
@@ -42,11 +56,15 @@ const basketReducer = (state = initialState, action) => {
     case UPDATE_BASKET_QUANTITY:
       return {
         ...state,
-        items: state.items.map((item) =>
-          item.productId === action.payload.productId
-            ? { ...item, quantity: action.payload.quantity }
-            : item
-        ),
+        items: state.items.map((item) => {
+          if (item.productId === action.payload.productId) {
+            const maxStock = item.stock || 0;
+            const newQuantity = Math.max(1, Math.min(action.payload.quantity, maxStock));
+
+            return { ...item, quantity: newQuantity };
+          }
+          return item;
+        }),
       };
 
     case CLEAR_BASKET:

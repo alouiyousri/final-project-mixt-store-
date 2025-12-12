@@ -13,6 +13,8 @@ export const addToBasket = (product) => {
       price: product.price,
       quantity: product.quantity || 1,
       image: product.image || (product.images?.[0]?.url ?? null),
+      stock: product.stock || 0, // Add stock information
+      size: product.size || null,
     },
   };
 };
