@@ -111,12 +111,12 @@ npm start
    PORT=5000
    ```env
    Update the `.env` file with your configuration:
-   
+
    ```
    cp .env.example .env
    ```bash
    Create a `.env` file in the root directory:
-   
+
 4. **Set up environment variables**
 
    ```

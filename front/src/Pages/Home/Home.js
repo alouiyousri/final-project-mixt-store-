@@ -14,6 +14,17 @@ const Home = () => {
     dispatch(getProducts());
   }, [dispatch]);
 
+  // Log products for debugging
+  useEffect(() => {
+    if (products.length > 0) {
+      console.log('📦 Products loaded:', products.length);
+      console.log('📂 Categories found:', [...new Set(products.map(p => p.category))]);
+      products.forEach(p => {
+        console.log(`  - ${p.name}: category="${p.category}"`);
+      });
+    }
+  }, [products]);
+
   // Fixed categories that always show
   const allCategories = ["T-SHIRT", "DRESS", "TROUSERS", "GYM SUITS", "SHOES", "ACCESSORIES"];
 
@@ -67,7 +78,11 @@ const Home = () => {
             {allCategories.map((category) => {
               const catKey = category.toLowerCase();
               const catInfo = categoryData[category] || categoryData[catKey] || getDefaultCategory(category);
-              const itemCount = products.filter((p) => p.category === category).length;
+
+              // Case-insensitive category matching
+              const itemCount = products.filter((p) =>
+                p.category && p.category.toUpperCase() === category.toUpperCase()
+              ).length;
 
               return (
                 <button

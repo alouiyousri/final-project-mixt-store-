@@ -28,6 +28,7 @@ const ProductList = () => {
   useEffect(() => {
     const categoryFromUrl = searchParams.get("category");
     if (categoryFromUrl) {
+      console.log('🔍 Category from URL:', categoryFromUrl);
       setSelectedCategory(categoryFromUrl);
     }
   }, [searchParams]);
@@ -56,7 +57,10 @@ const ProductList = () => {
   const filteredProducts =
     selectedCategory === "all"
       ? searched
-      : searched.filter((p) => p.category === selectedCategory);
+      : searched.filter((p) =>
+          p.category &&
+          p.category.toUpperCase() === selectedCategory.toUpperCase()
+        );
 
   return (
     <div className="product-list-container">
