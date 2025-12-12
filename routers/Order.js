@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const orderController = require("../controllers/order");
 const isAuth = require("../middleware/isAuth");
+const { orderValidation, validation } = require("../middleware/validation");
 
 // Public: place a new order
-router.post("/", orderController.postOrder);
+router.post("/", orderValidation(), validation, orderController.postOrder);
 
 // Admin: list all orders
 router.get("/", isAuth, orderController.getOrder);

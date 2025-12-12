@@ -4,6 +4,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const morgan = require("morgan");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const path = require("path");
 const connectDB = require("./config/connectdb");
 
@@ -16,6 +18,17 @@ connectDB();
 // Initialize Express app
 const app = express();
 
+// Security Middleware
+app.use(helmet()); // Adds security headers
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+});
+app.use("/api/", limiter);
+
 // Middleware
 app.use(cors());
 app.use(express.json()); // Parse JSON bodies
@@ -26,6 +39,7 @@ app.use(morgan("dev")); // Logging
 const productRoutes = require("./routers/product");
 const orderRoutes = require("./routers/order");
 const adminRoutes = require("./routers/admine");
+const {errorHandler} = require("./utils/errorHandler");
 
 app.use("/api/products", productRoutes); // Product routes
 app.use("/api/orders", orderRoutes); // Order routes
@@ -39,11 +53,8 @@ app.get("/", (req, res) => {
   res.send("🟢 API is running ...");
 });
 
-// Error handler middleware (optional, improves error visibility)
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Something went wrong!" });
-});
+// Global error handler middleware
+app.use(errorHandler);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

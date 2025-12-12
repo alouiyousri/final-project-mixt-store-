@@ -1,12 +1,14 @@
 // src/Components/ProductList/ProductList.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { getProducts } from "../../JS/Action/ProductAction";
 import ProductCard from "../ProductCard/ProductCard";
 import "./ProductList.css"; // ← Import the CSS
 
 const ProductList = () => {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     products = [],
     loading,
@@ -14,17 +16,37 @@ const ProductList = () => {
   } = useSelector((state) => state.product);
 
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchParams.get("category") || "all"
+  );
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+
+  // Update selected category when URL changes
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get("category");
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [searchParams]);
 
   // derive categories (auto-updates when products change)
   const categories = [
     "all",
     ...Array.from(new Set(products.map((p) => p.category).filter(Boolean))),
   ];
+
+  // Handle category change
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    if (category === "all") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ category });
+    }
+  };
 
   // apply search and category filters
   const searched = products.filter((p) =>
@@ -46,6 +68,7 @@ const ProductList = () => {
           gap: 12,
           alignItems: "center",
           marginBottom: 12,
+          flexWrap: "wrap",
         }}
       >
         <input
@@ -60,7 +83,7 @@ const ProductList = () => {
           <label style={{ marginRight: 8 }}>Category:</label>
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => handleCategoryChange(e.target.value)}
           >
             {categories.map((cat, i) => (
               <option key={i} value={cat}>

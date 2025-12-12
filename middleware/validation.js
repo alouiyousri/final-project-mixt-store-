@@ -25,8 +25,8 @@ const orderValidation = () => [
     .trim()
     .notEmpty()
     .withMessage("Phone is required")
-    .isString()
-    .withMessage("Phone must be a string"),
+    .isLength({ min: 10 })
+    .withMessage("Phone must be at least 10 characters"),
 
   body("customerInfo.location")
     .trim()

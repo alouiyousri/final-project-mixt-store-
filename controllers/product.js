@@ -10,6 +10,14 @@ exports.addproduct = async (req, res) => {
 
     const { name, description, price, category, stock, size } = req.body;
 
+    // Validation
+    if (!name || !description || !price || !category) {
+      return res.status(400).json({
+        msg: "Missing required fields",
+        required: ["name", "description", "price", "category"]
+      });
+    }
+
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ msg: "At least one image is required" });
     }
