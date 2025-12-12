@@ -1,103 +1,224 @@
+/* Product Card - Feminine & Elegant Design */
+
 .product-card {
-  background-color: #111; /* Dark background */
-  color: #c0c0c0; /* Silver text */
-  border: 1px solid #444; /* Subtle silver border */
-  padding: 20px;
-  border-radius: 10px;
-  margin: 15px;
-  max-width: 300px;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%);
+  color: #5a4a5f;
+  border: 2px solid #f8bbd0;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
   text-align: center;
-  box-shadow: 0 0 8px rgba(192, 192, 192, 0.1);
-  transition: transform 0.2s;
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.12);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(244, 143, 177, 0.1) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-card:hover::before {
+  opacity: 1;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(233, 30, 99, 0.2);
+  border-color: #f48fb1;
 }
 
+/* Product Image */
 .product-card img {
   width: 100%;
-  max-height: 200px;
+  height: 250px;
   object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 15px;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Product Content */
+.product-card-content {
+  padding: 20px;
 }
 
 .product-card h3 {
   margin: 10px 0;
-  color: #e0e0e0;
+  color: #ad1457;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 .product-card p {
-  font-size: 16px;
+  font-size: 0.95rem;
   margin-bottom: 15px;
+  color: #8e6b93;
+  line-height: 1.5;
 }
 
+.product-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #e91e63;
+  margin: 15px 0;
+}
+
+.product-category {
+  display: inline-block;
+  background: linear-gradient(135deg, #f8bbd0 0%, #fce4ec 100%);
+  color: #ad1457;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.product-stock {
+  font-size: 0.9rem;
+  color: #ba68c8;
+  margin: 8px 0;
+}
+
+.product-stock.low-stock {
+  color: #f06292;
+  font-weight: 600;
+}
+
+.product-stock.out-of-stock {
+  color: #c2185b;
+  font-weight: 700;
+}
+
+/* Button Styles */
 .product-card button {
-  background-color: #c0c0c0; /* Silver button */
-  color: #000; /* Black text */
+  background: linear-gradient(135deg, #e91e63 0%, #f48fb1 100%);
+  color: white;
   border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  margin: 5px;
+  padding: 12px 25px;
+  border-radius: 25px;
+  margin: 8px 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.25);
 }
 
 .product-card button:hover {
-  background-color: #a9a9a9;
+  background: linear-gradient(135deg, #c2185b 0%, #e91e63 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(233, 30, 99, 0.35);
 }
 
-/* Red text for delete */
-.product-card button.delete {
-  color: red;
-  background-color: transparent;
-  border: 1px solid red;
+.product-card button:active {
+  transform: translateY(0);
 }
 
-.product-card button.delete:hover {
-  background-color: rgba(255, 0, 0, 0.1);
+/* Secondary Button (View Details) */
+.product-card button.btn-secondary {
+  background: linear-gradient(135deg, #ce93d8 0%, #f48fb1 100%);
 }
 
-.product-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: space-between;
+.product-card button.btn-secondary:hover {
+  background: linear-gradient(135deg, #ba68c8 0%, #e91e63 100%);
 }
 
-.stock-badge {
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  margin-top: 6px;
-  width: fit-content;
+/* Danger Button (Delete) */
+.product-card button.btn-danger {
+  background: linear-gradient(135deg, #f06292 0%, #ec407a 100%);
 }
 
-/* LOW STOCK */
-.stock-badge.low {
-  background: black;
-  color: #ffcc00;
-  border: 1px solid #ffcc00;
+.product-card button.btn-danger:hover {
+  background: linear-gradient(135deg, #ec407a 0%, #e91e63 100%);
 }
 
-/* OUT OF STOCK */
-.stock-badge.out {
-  background: black;
-  color: #ff4444;
-  border: 1px solid #ff4444;
+/* Add to Cart Button */
+.add-to-cart-btn {
+  width: calc(100% - 20px);
+  margin: 10px;
+  padding: 14px;
+  font-size: 1rem;
 }
 
-/* optional small adjustments */
-.product-image {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 6px;
+/* Badge/Tag */
+.product-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #e91e63 0%, #f48fb1 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3);
+  z-index: 10;
 }
 
-.admin-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
+.product-badge.new {
+  background: linear-gradient(135deg, #ce93d8 0%, #ba68c8 100%);
 }
+
+.product-badge.sale {
+  background: linear-gradient(135deg, #f06292 0%, #ec407a 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-card img {
+    height: 200px;
+  }
+
+  .product-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .product-card button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card img {
+    height: 180px;
+  }
+
+  .product-card-content {
+    padding: 15px;
+  }
+
+  .product-card h3 {
+    font-size: 1rem;
+  }
+
+  .product-price {
+    font-size: 1.2rem;
+  }
+
+  .product-card button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    margin: 5px 3px;
+  }
+}
+

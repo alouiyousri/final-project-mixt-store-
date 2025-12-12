@@ -1,61 +1,166 @@
-/* src/Pages/Login/login.css */
+/* Admin Login - Feminine & Elegant Design */
 
 .login-card {
-  background-color: #121212;
-  color: #c0c0c0;
-  max-width: 400px;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%);
+  color: #5a4a5f;
+  max-width: 450px;
   margin: 80px auto;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(192, 192, 192, 0.2);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 50px 40px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(233, 30, 99, 0.2);
+  border: 2px solid #f8bbd0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .login-card h2 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #ffffff;
+  margin-bottom: 35px;
+  color: #d81b60;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.login-card h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #e91e63, #f48fb1);
+  border-radius: 2px;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
 }
 
 .login-card label {
   display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ad1457;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
 }
 
 .login-card input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  background-color: #1f1f1f;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 6px;
-  transition: border 0.3s;
+  padding: 14px 18px;
+  margin-bottom: 25px;
+  background-color: #ffffff;
+  color: #5a4a5f;
+  border: 2px solid #f8bbd0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .login-card input:focus {
-  border-color: #c0c0c0;
+  border-color: #e91e63;
   outline: none;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.15);
+  background-color: #fff9fc;
+}
+
+.login-card input::placeholder {
+  color: #ba68c8;
+  font-weight: 300;
 }
 
 .login-card button {
   width: 100%;
-  padding: 12px;
-  background: linear-gradient(145deg, #444, #222);
-  color: #fff;
+  padding: 16px;
+  background: linear-gradient(135deg, #e91e63 0%, #f48fb1 100%);
+  color: white;
   border: none;
-  border-radius: 6px;
-  font-weight: bold;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
+  margin-top: 10px;
 }
 
-.login-card button:hover {
-  background: linear-gradient(145deg, #555, #333);
+.login-card button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #c2185b 0%, #e91e63 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
 }
 
 .login-card button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
+
+.login-card button:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+/* Icon/Logo at top */
+.login-icon {
+  text-align: center;
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-card {
+    margin: 40px 20px;
+    padding: 40px 30px;
+  }
+
+  .login-card h2 {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    margin: 20px 15px;
+    padding: 30px 20px;
+  }
+
+  .login-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .login-card input {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+  }
+
+  .login-card button {
+    padding: 14px;
+    font-size: 1rem;
+  }
+}
+

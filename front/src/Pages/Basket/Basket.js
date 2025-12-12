@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { clearBasket, removeFromBasket } from "../../JS/Action/basketAction";
-import "./Basket.css"; // Import CSS
+import "./Basket.css";
+import * as tunisiaGovernorates from "react-bootstrap/ElementChildren"; // Import CSS
 
 const Basket = () => {
   const dispatch = useDispatch();
@@ -102,37 +103,80 @@ const Basket = () => {
           <hr className="basket-divider" />
           <h3 className="basket-complete-title">🧾 Complete Your Order</h3>
           <form onSubmit={handleSubmit} className="basket-form">
-            <input
-              name="name"
-              placeholder="Name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="basket-input"
-            />
-            <input
-              name="phone"
-              placeholder="Phone"
-              value={form.phone}
-              onChange={handleChange}
-              required
-              className="basket-input"
-            />
-            <input
-              name="location"
-              placeholder="Location"
-              value={form.location}
-              onChange={handleChange}
-              required
-              className="basket-input"
-            />
+            {/* Personal Information */}
+            <div className="form-section">
+              <h4 className="form-section-title">👤 Personal Information</h4>
+              <input
+                name="name"
+                placeholder="Full Name *"
+                value={form.name}
+                onChange={handleChange}
+                required
+                className="basket-input"
+              />
+              <input
+                name="phone"
+                type="tel"
+                placeholder="Phone Number (e.g., +216 XX XXX XXX) *"
+                value={form.phone}
+                onChange={handleChange}
+                required
+                className="basket-input"
+              />
+            </div>
+
+            {/* Delivery Address */}
+            <div className="form-section">
+              <h4 className="form-section-title">📍 Delivery Address</h4>
+
+              <select
+                name="governorate"
+                value={form.governorate}
+                onChange={handleChange}
+                required
+                className="basket-select"
+              >
+                <option value="">Select Governorate *</option>
+                {tunisiaGovernorates.map((gov) => (
+                  <option key={gov} value={gov}>{gov}</option>
+                ))}
+              </select>
+
+              <input
+                name="municipality"
+                placeholder="Municipality / Delegation *"
+                value={form.municipality}
+                onChange={handleChange}
+                required
+                className="basket-input"
+              />
+
+              <textarea
+                name="address"
+                placeholder="Street Address (House/Building number, Street name) *"
+                value={form.address}
+                onChange={handleChange}
+                required
+                rows="3"
+                className="basket-textarea"
+              />
+
+              <input
+                name="postalCode"
+                placeholder="Postal Code (optional)"
+                value={form.postalCode}
+                onChange={handleChange}
+                className="basket-input"
+              />
+            </div>
+
             <div className="basket-buttons">
               <button
                 type="submit"
                 disabled={loading}
                 className="basket-confirm-button"
               >
-                {loading ? "Placing Order..." : "Confirm Order"}
+                {loading ? "Placing Order..." : "✓ Confirm Order"}
               </button>
               <button
                 type="button"
