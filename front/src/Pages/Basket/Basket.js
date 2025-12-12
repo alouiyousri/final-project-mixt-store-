@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {
-  clearBasket,
-  removeFromBasket,
-} from "../../JS/Action/basketAction";
+import { clearBasket, removeFromBasket } from "../../JS/Action/basketAction";
 import "./Basket.css"; // Import CSS
 
 const Basket = () => {
@@ -76,8 +73,8 @@ const Basket = () => {
                 />
               )}
               <span className="basket-item-name">
-                <strong>{item.name}</strong> × {item.quantity} — $
-                {(item.price * item.quantity).toFixed(2)}
+                <strong>{item.name}</strong> {item.size ? `(${item.size})` : ""}{" "}
+                × {item.quantity} — ${(item.price * item.quantity).toFixed(2)}
               </span>
               <button
                 onClick={() => handleRemove(item.productId)}

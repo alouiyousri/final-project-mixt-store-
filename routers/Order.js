@@ -3,23 +3,22 @@ const router = express.Router();
 const orderController = require("../controllers/order");
 const isAuth = require("../middleware/isAuth");
 
-// Place a new order (public) — validation temporarily removed
+// Public: place a new order
 router.post("/", orderController.postOrder);
 
-router.get("/:orderId", isAuth, orderController.getSingleOrder);
-// Get all orders (admin)
+// Admin: list all orders
 router.get("/", isAuth, orderController.getOrder);
 
-// Delete an order (admin)
-router.delete("/:orderId", isAuth, orderController.deleteOrder);
+// Admin: get facture for an order
+router.get("/:orderId/facture", isAuth, orderController.getFacture);
 
-// Additional route (optional alias for delete)
-router.delete("/orders/:orderId", isAuth, orderController.deleteOrder);
+// Admin: single order
+router.get("/:orderId", isAuth, orderController.getSingleOrder);
 
-// Update order status (admin)
+// Admin: update order status
 router.put("/:orderId/status", isAuth, orderController.updateOrderStatus);
 
-// Get facture for an order (admin)
-router.get("/:orderId/facture", isAuth, orderController.getFacture);
+// Admin: delete an order
+router.delete("/:orderId", isAuth, orderController.deleteOrder);
 
 module.exports = router;

@@ -1,48 +1,58 @@
 const Product = require("../models/product");
 const cloudinary = require("../utils/cloudinary");
+const streamifier = require("streamifier"); // npm i streamifier if not installed
 
-// Add Product (supports single or multiple images)
+// Add Product (supports multer diskStorage or memoryStorage)
 exports.addproduct = async (req, res) => {
   try {
-    const { name, description, price } = req.body;
-    let images = [];
+    console.log("addproduct body:", req.body);
+    console.log("addproduct files:", req.files);
 
-    // Handle multiple or single image upload
-    if (req.files && req.files.length > 0) {
-      images = await Promise.all(
-        req.files.map(async (file) => {
-          const result = await cloudinary.uploader.upload(file.path);
-          return {
-            url: result.secure_url,
-            public_id: result.public_id,
-          };
-        })
-      );
-    } else if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      images.push({
-        url: result.secure_url,
-        public_id: result.public_id,
+    const { name, description, price, category, stock, size } = req.body;
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ msg: "At least one image is required" });
+    }
+
+    const uploadOne = (file) => {
+      // if multer wrote file to disk -> file.path exists
+      if (file.path) {
+        return cloudinary.uploader.upload(file.path);
+      }
+      // memoryStorage -> file.buffer exists
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+          }
+        );
+        streamifier.createReadStream(file.buffer).pipe(uploadStream);
       });
-    }
+    };
 
-    if (images.length === 0) {
-      return res.status(400).send({ msg: "At least one image is required" });
-    }
+    const images = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await uploadOne(file);
+        return { url: result.secure_url, public_id: result.public_id };
+      })
+    );
 
-    const newproduct = new Product({
+    const newProduct = new Product({
       name,
       description,
-      price,
+      price: price !== undefined ? Number(price) : undefined,
+      category,
+      stock: stock !== undefined ? Number(stock) : 0,
+      size,
       images,
     });
 
-    await newproduct.save();
-    res
-      .status(200)
-      .send({ msg: "Product added successfully", product: newproduct });
+    await newProduct.save();
+    res.status(201).json({ msg: "Product added", product: newProduct });
   } catch (error) {
-    res.status(400).send({ msg: "Error adding product", error });
+    console.error("addproduct error:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
   }
 };
 
@@ -95,7 +105,14 @@ exports.editproduct = async (req, res) => {
     const { id } = req.params;
     let updateData = { ...req.body };
 
-    if (updateData.price) updateData.price = Number(updateData.price);
+    // convert numeric fields if present
+    if (updateData.price !== undefined && updateData.price !== "") {
+      updateData.price = Number(updateData.price);
+    }
+    if (updateData.stock !== undefined && updateData.stock !== "") {
+      updateData.stock = Number(updateData.stock);
+    }
+
     console.log("Incoming form data:", updateData);
 
     const product = await Product.findById(id);

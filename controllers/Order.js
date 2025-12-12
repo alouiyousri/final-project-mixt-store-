@@ -1,31 +1,78 @@
 // controllers/order.js
+const mongoose = require("mongoose");
 const Order = require("../models/Order");
+const Product = require("../models/product");
 
+// Create order (public) — validates stock, reduces stock atomically
 exports.postOrder = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     let { items, total, customerInfo } = req.body;
 
-    if (!items || !Array.isArray(items) || items.length === 0 || !total) {
+    if (
+      !items ||
+      !Array.isArray(items) ||
+      items.length === 0 ||
+      total == null
+    ) {
+      await session.abortTransaction();
+      session.endSession();
       return res.status(400).json({ error: "Invalid order data" });
     }
 
-    // Ensure image field is preserved or set to null
+    // Validate availability
+    for (const it of items) {
+      const prod = await Product.findById(it.productId).session(session);
+      if (!prod) {
+        await session.abortTransaction();
+        session.endSession();
+        return res
+          .status(404)
+          .json({ error: `Product not found: ${it.productId}` });
+      }
+      const available = prod.stock ?? 0;
+      if (available < it.quantity) {
+        await session.abortTransaction();
+        session.endSession();
+        return res
+          .status(400)
+          .json({ error: `Insufficient stock for ${prod.name}` });
+      }
+    }
+
+    // Deduct stock
+    for (const it of items) {
+      await Product.findByIdAndUpdate(
+        it.productId,
+        { $inc: { stock: -Math.abs(Number(it.quantity)) } },
+        { session }
+      );
+    }
+
+    // Normalize items (preserve image and size)
     items = items.map((item) => ({
       productId: item.productId,
       name: item.name,
       price: item.price,
       quantity: item.quantity,
-      image: item.image || null, // ✅ Add image field to DB
+      size: item.size || null,
+      image: item.image || null,
     }));
 
     const newOrder = new Order({ items, total, customerInfo });
-    await newOrder.save();
+    await newOrder.save({ session });
+
+    await session.commitTransaction();
+    session.endSession();
 
     res.status(201).json({
       message: "Order placed successfully",
       order: newOrder,
     });
   } catch (error) {
+    await session.abortTransaction().catch(() => {});
+    session.endSession();
     console.error(error);
     res.status(500).json({
       error: "Failed to place order",
@@ -33,6 +80,7 @@ exports.postOrder = async (req, res) => {
     });
   }
 };
+
 // GET /api/orders - Get all orders (admin only)
 exports.getOrder = async (req, res) => {
   try {
@@ -104,6 +152,7 @@ exports.deleteOrder = async (req, res) => {
     res.status(500).json({ error: "Failed to delete order" });
   }
 };
+
 // GET /api/orders/:orderId - Single order (admin only)
 exports.getSingleOrder = async (req, res) => {
   try {

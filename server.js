@@ -28,8 +28,8 @@ const orderRoutes = require("./routers/order");
 const adminRoutes = require("./routers/admine");
 
 app.use("/api/products", productRoutes); // Product routes
-app.use("/api/orders", orderRoutes);     // Order routes
-app.use("/api/admin", adminRoutes);      // Admin routes
+app.use("/api/orders", orderRoutes); // Order routes
+app.use("/api/admin", adminRoutes); // Admin routes
 
 // Serve uploaded images (Cloudinary handles remote uploads, this is for local backups if needed)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

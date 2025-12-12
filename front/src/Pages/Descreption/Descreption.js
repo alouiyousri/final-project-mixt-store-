@@ -32,6 +32,11 @@ const Description = () => {
   }, [id]);
 
   const handleAddToBasket = () => {
+    if ((product.stock ?? 0) <= 0) {
+      setMessage("❌ Out of stock");
+      return;
+    }
+
     dispatch(
       addToBasket({
         productId: product._id,
@@ -39,6 +44,7 @@ const Description = () => {
         price: product.price,
         image: product.images?.[0]?.url || "",
         quantity,
+        size: product.size,
       })
     );
     setMessage("✅ Added to basket!");
@@ -49,7 +55,11 @@ const Description = () => {
       await axios.put(
         `/api/products/edit/${id}`,
         { description: descDraft },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+          },
+        }
       );
       setMessage("✅ Description updated.");
       setProduct((prev) => ({ ...prev, description: descDraft }));
@@ -125,6 +135,18 @@ const Description = () => {
         <strong>Price:</strong> ${product.price.toFixed(2)}
       </p>
 
+      {/* New product meta */}
+      <p>
+        <strong>Category:</strong> {product.category || "—"}
+      </p>
+      <p>
+        <strong>Size:</strong> {product.size || "—"}
+      </p>
+      <p>
+        <strong>Stock:</strong>{" "}
+        {(product.stock ?? 0) > 0 ? product.stock : "Out of stock"}
+      </p>
+
       {!adminInfo && (
         <>
           <label className="quantity-label">
@@ -138,8 +160,12 @@ const Description = () => {
             />
           </label>
           <br />
-          <button className="add-basket-btn" onClick={handleAddToBasket}>
-            Add to Basket
+          <button
+            className="add-basket-btn"
+            onClick={handleAddToBasket}
+            disabled={(product.stock ?? 0) <= 0}
+          >
+            {(product.stock ?? 0) > 0 ? "Add to Basket" : "Out of Stock"}
           </button>{" "}
           <button className="go-basket-btn" onClick={() => navigate("/basket")}>
             Go to Basket

@@ -15,6 +15,11 @@ const EditProduct = () => {
   const [images, setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
+  // new fields
+  const [size, setSize] = useState("");
+  const [category, setCategory] = useState("");
+  const [stock, setStock] = useState(0);
+
   useEffect(() => {
     (async () => {
       try {
@@ -25,6 +30,9 @@ const EditProduct = () => {
           description: data.product.description,
           price: data.product.price,
         });
+        setSize(data.product.size || "");
+        setCategory(data.product.category || "");
+        setStock(data.product.stock ?? 0);
       } catch {
         toast.error("❌ Could not fetch product");
       }
@@ -44,6 +52,13 @@ const EditProduct = () => {
     fd.append("name", form.name);
     fd.append("description", form.description);
     fd.append("price", form.price);
+
+    // append new fields
+    fd.append("size", size);
+    fd.append("category", category);
+    fd.append("stock", String(stock));
+
+    // only append new images if selected — existing images will be preserved server-side
     images.forEach((img) => fd.append("images", img));
 
     try {
@@ -95,6 +110,28 @@ const EditProduct = () => {
           placeholder="Price"
           required
         />
+
+        {/* new inputs: size, category, stock */}
+        <input
+          type="text"
+          placeholder="Size (S, M, L or 42, 43...)"
+          value={size}
+          onChange={(e) => setSize(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Stock"
+          value={stock}
+          min="0"
+          onChange={(e) => setStock(Number(e.target.value))}
+        />
+
         <input
           type="file"
           multiple
